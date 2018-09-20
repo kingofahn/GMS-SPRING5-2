@@ -31,8 +31,6 @@
 	  </where>
   </select>
   
-  
-  
   <select id="login" resultType="string">
 	SELECT userid FROM MEMBER
 	WHERE USERID LIKE #{userid}
@@ -43,8 +41,6 @@
 	SELECT userid FROM MEMBER
 	WHERE USERID LIKE #{userid}
   </select>
-  
-
   
   <update id="update">
 	UPDATE MEMBER

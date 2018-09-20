@@ -8,7 +8,7 @@
  values(#{title},#{content}, #{writer})
  </insert>
 
- <select id="selectOne" resultType="com.gms.web.brd.Article">
+ <select id="selectOne" resultType="com.gms.web.brd.Board">
  select 
    bno, title, content, writer, regdate, viewcnt 
  from 
@@ -25,7 +25,7 @@
  delete from tbl_board where bno = #{bno}
  </delete>
 
- <select id="selectList" resultType="com.gms.web.brd.Article">
+ <select id="selectList" resultType="com.gms.web.brd.Board">
  <![CDATA[
  select 
    bno, title, content, writer, regdate, viewcnt 
@@ -36,7 +36,7 @@
  ]]>  
  </select>
  
- <select id="listPage" resultType="com.gms.web.brd.Article">
+ <select id="listPage" resultType="com.gms.web.brd.Board">
  <![CDATA[
  select 
    bno, title, content, writer, regdate, viewcnt 
@@ -48,7 +48,7 @@
  ]]>  
  </select>
 
-  <select id="listCriteria" resultType="com.gms.web.brd.Article">
+  <select id="listCriteria" resultType="com.gms.web.brd.Board">
  <![CDATA[
  select 
    bno, title, content, writer, regdate, viewcnt 
@@ -102,7 +102,7 @@
  </if>  
 </sql>
  
-<select id="listSearch" resultType="com.gms.web.brd.Article">
+<select id="listSearch" resultType="com.gms.web.brd.Board">
 <![CDATA[  
   select * 
   from tbl_board 

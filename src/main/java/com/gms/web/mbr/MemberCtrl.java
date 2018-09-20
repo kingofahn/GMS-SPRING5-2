@@ -27,13 +27,18 @@ public class MemberCtrl {
 	
 	@PostMapping("/join")
 	public @ResponseBody Map<String,Object> add(@RequestBody Member pm) {
+		Map<String,Object> rmap = new HashMap<>();
+		String flag = "회원가입 실패";
 		Util.log.accept("\n --------- join  !!--------");
 		Util.log.accept("들어온값 :::" + pm.toString());
-		pm.setAge(util2.getAgeAndMember.apply(pm).getAge());
-		pm.setGender(util2.getAgeAndMember.apply(pm).getGender());
-		Util.log.accept("age :  " + pm.getAge());
-		Util.log.accept("gender : " + pm.getGender());
-		Map<String,Object> rmap = new HashMap<>();
+/*		if(mbrMap.count(pm)!=0) {*/
+			pm.setAge(util2.getAgeAndMember.apply(pm).getAge());
+			pm.setGender(util2.getAgeAndMember.apply(pm).getGender());
+			Util.log.accept("age :  " + pm.getAge());
+			Util.log.accept("gender : " + pm.getGender());
+			/*mbrMap.post(pm);*/
+			rmap.put("회원가입결과 :", flag);
+		/*}*/
 		return rmap;
 	}
 

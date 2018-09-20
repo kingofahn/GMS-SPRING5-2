@@ -13,7 +13,7 @@ public class Util2 {
 		int stf = Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date()))+1-1900;
 		String ssn = mbr.getSsn();
 		String gender = "";
-		gender=(ssn.split("/")[1].equals("1"))? "man":"woman" ;
+		gender=(ssn.split("-")[1].equals("1"))? "man":"woman" ;
 		mbr.setAge(String.valueOf(stf - Integer.parseInt(ssn.substring(0,2))));
 		mbr.setGender(gender);
 		return mbr;
