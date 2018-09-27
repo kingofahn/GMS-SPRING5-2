@@ -67,16 +67,13 @@ var ui={
 		  </table>
 		</div>*/
 		/*let d = $('<div class="panel panel-'+ x.type+'/>');*/
-		let d = $('<div class="panel panel-'+x.type+'/>');
-		let ph = $('<div class="panel-heading"/>');
-		let pb = $('<div class="panel-body"/>');
-		let p = $('<p>');
+		let d = $('<div/>').addClass('panel panel-'+x.type);
+		let ph = $('<div/>').addClass('panel-heading').html(x.head);
+		let p = $('<p/>').html(x.body);
+		let pb = $('<div/>').addClass('panel-body');
 		let thead = $('<thead/>')
-		let t = $('<table class='+x.clazz+'/>');
+		let t = $('<table/>').attr({id:x.id}).addClass(x.clazz);
 		let tr = $('<tr/>');
-		d.html(x.head).appendTo(t);
-		ph.html(x.body).appendTo(d)
-
 		$.each(x.list,(i,j)=>{
 			$('<th/>').html(j).appendTo(tr);
 		});
@@ -85,7 +82,8 @@ var ui={
 		$('<tbody/>').appendTo(t);
 		ph.appendTo(d);
 		pb.appendTo(d);
+		p.appendTo(pb)
 		t.appendTo(d);
-		return t;
+		return d;
 	}
 }
