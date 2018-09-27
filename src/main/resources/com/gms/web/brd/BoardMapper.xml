@@ -16,6 +16,22 @@
  where bno = #{bno}
  </select>
 
+ <select id="listAll" resultType="com.gms.web.brd.Board">
+<!-- 			SELECT T.* 
+			FROM (SELECT @ROWNUM := @ROWNUM + 1 AS RNUM, b.*
+					FROM BOARD b 
+					ORDER BY RNUM DESC) T 
+			WHERE T.bno BETWEEN #{beginRow} AND #{endRow} -->
+          SELECT *
+           FROM (
+            SELECT row_number() over() as No, A.*
+            FROM (
+            SELECT *
+            FROM board) A
+            ORDER BY No DESC) B
+            WHERE NO BETWEEN #{beginRow} AND #{endRow}
+ </select>
+
  <update id="update">
  update tbl_board set title =#{title}, content =#{content} 
  where bno = #{bno}
@@ -36,10 +52,10 @@
  ]]>  
  </select>
  
- <select id="listPage" resultType="com.gms.web.brd.Board">
+ <select id="listPage" resultType="com.gms.web.brd.Board">s
  <![CDATA[
  select 
-   bno, title, content, writer, regdate, viewcnt 
+   *
  from 
    tbl_board 
  where bno > 0 

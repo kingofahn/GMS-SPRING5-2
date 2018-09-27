@@ -17,7 +17,6 @@ import com.gms.web.cmm.Util;
 import com.gms.web.cmm.Util2;
 
 @RestController
-@Controller
 @RequestMapping("/member")
 
 public class MemberCtrl {

@@ -6,7 +6,7 @@ app =(()=>{
 		app.router.init(x);
 	};
 	return {init : init};
-})(); // app end
+})(); // app END
 app.main =(()=>{
 	var w, nav, header, content, footer, ctx, script, style, img, login;
 	var init =()=>{
@@ -21,10 +21,10 @@ app.main =(()=>{
 		footer=script+'/footer.js';
 		login=script+'/login.js';
 		onCreate();
-	}; // init end
+	}; // init END
 	var onCreate =()=>{
 		setContentView();
-	};  // onCreate end
+	};  // onCreate END
 	var setContentView =()=>{
 		$.when(
 /*			$.getScript($.script()+'/nav.js'),
@@ -60,24 +60,62 @@ app.main =(()=>{
 		})
 		.fail(x=>{
 			
-		}); // fail end
-	}; // setContentView end
+		}); // fail END
+	}; // setContentView END
 	return {init:init};
-})();  // app.main end
+})();  // app.main END
+
+
 app.board =(()=>{
+	var w, nav, header, content, footer, ctx, script, style, img;
 	var init =()=>{
+		ctx = $.ctx();
+		script = $.script();
+		style = $.style();
+		img = $.img();
+		w=$('#wrapper');
+		nav=script+'/nav.js';
+		header=script+'/header.js';
+		content=script+'/content.js';
+		footer=script+'/footer.js';
 		onCreate();
 	};
 	var onCreate =()=>{
 		setContentView();
 	};
 	var setContentView =()=>{
-		alert('Board');
-		$('#header').remove();
+		/*$('#header').remove();*/
 		$('#content').empty();
-	};
+		$.getJSON(ctx+'/boards/1', d=>{
+			console.log('getJSON 성공!!'+ d.ls);
+			$.getScript($.script()+'/compo.js',()=>{
+				let x = {
+						type : 'default',
+						id : 'table',
+						head : '게시판',
+						body : '오픈게시판...누구든지 사용가능',
+						list : ['NO','제목','내용','글쓴이','작성일','조회수'],
+						clazz : 'table table-bordered'
+				};
+				(ui.table(x))
+				.appendTo($('#content'));
+				$.each(d,(i,j)=>{
+					$('<tr/>').append(
+					$('<td/>').attr('width','5%').html(j.bno),
+					$('<td/>').attr('width','10%').html(j.title),
+					$('<td/>').attr('width','50%').html(j.content),
+					$('<td/>').attr('width','10%').html(j.writer),
+					$('<td/>').attr('width','10%').html(j.regdate),
+					$('<td/>').attr('width','5%').html(j.viewcnt)
+					).appendTo($('tbody'));
+				});
+			});
+		}); // getJSON END
+	}; // setContentView END
 	return {init:init};
-})();  // app.board end
+})();  // app.board END
+
+
 app.permision = (()=>{
 	var login = ()=>{
 		/*$('#header').remove();*/
@@ -118,13 +156,13 @@ app.permision = (()=>{
 							},
 							error : (m1,m2,m3)=>{
 								alert('error : '+m1);
-							} /* error END*/
-						}); /*AJAX END*/
-					} /*nullchecker END*/
-				}); /*login_form_btn END*/
-			}) /*getScript END*/
-		});
-	} /*login END*/
+							} // error END
+						}); // AJAX END
+					} // nullchecker END
+				}); // login_form_btn END
+			}) // getScript END
+		}); //click END
+	} // login END
 	
 	var join = ()=>{
 		$.getScript($.script()+'/footer.js');
@@ -140,10 +178,6 @@ app.permision = (()=>{
 			for(var i=0; arr.length; i++){
 				alert(arr[i])
 			}*/
-			
-
-			
-			
 			ui.anchor({id:'join_form_btn', txt:'회 원 가 입'})
 			.addClass('btn btn-primary w-300px')
 			.appendTo($("#content-box"))
@@ -180,18 +214,18 @@ app.permision = (()=>{
 							success : d=>{
 								console.log('가입성공');
 								app.permision.login();
-								/*$('#content').html(loginUI()).append(footerUI());*/
+								// $('#content').html(loginUI()).append(footerUI());
 							},
 							error : (m1,m2,m3)=>{
 								alert('에러발생 1'+m1);
-							} /* error END*/
-				}) /*ajax END*/
-				} // nullcheck end
-			}) // click end
-		}); // compo end
-	} /*join END*/
+							} // error END
+				}) // ajax END
+				} // nullcheck END
+			}) // click END
+		}); // compo END
+	} // join END
 	return {login : login, join : join}
-})(); // app.permision  end
+})(); // app.permision  END
 app.router = {
 	init :x=>{
 		$.getScript(x+'/resources/js/router.js',
@@ -235,6 +269,6 @@ app.router = {
 							})
 						})
 						.fail(x=>{
-						}); // fail end
-	} // home end
-}; // app.router end
+						}); // fail END
+	} // home END
+}; // app.router END
