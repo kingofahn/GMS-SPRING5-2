@@ -39,18 +39,21 @@ public class BoardCtrl {
 	public @ResponseBody Map<String,Object> 
 		mylist(@PathVariable String pageNo,
 				@PathVariable String id){
+		Map<String,Object> rmap = new HashMap<>();
 		Util.log.accept("넘어온페이지 : " + pageNo);
 		Util.log.accept("넘어온id : " + id);
-		page.setWriter(id);
-		Util.log.accept("brd.getWriter()"+brd.getWriter());
-		Map<String,Object> rmap = new HashMap<>();
+		rmap.put("writer",id);
+		Util.log.accept("brd.getWriter()"+rmap.get("writer"));
 		rmap.put("pageNumber", Integer.parseInt(pageNo));
-		rmap.put("countRow", brdMap.countUserList(page));
-		Util.log.accept("brdMap.countUserList(brd) : " + brdMap.countUserList(page));
+		rmap.put("countRow", brdMap.countUserList(rmap));
+		Util.log.accept("brdMap.countUserList(rmap) : " + brdMap.countUserList(rmap));
 		page.carryOut(rmap);
-		rmap.put("list", brdMap.selectUserList(page));
+		rmap.put("beginRow", page.getBeginRow());
+		rmap.put("endRow", page.getEndRow());
 		rmap.put("page", page);
-		Util.log.accept("brdMap.selectUserList(brd) : " + brdMap.selectUserList(page));
+		List<Board> list= brdMap.selectUserList(rmap);
+		rmap.put("list", list);
+		Util.log.accept("brdMap.selectUserList(rmap) : " + rmap.get("list"));
 		return rmap;
 	}
 }

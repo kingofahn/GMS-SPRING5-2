@@ -10,7 +10,6 @@ import lombok.Data;
 public class Pagination implements Proxy{
 	int countRow, pageNumber,beginRow, endRow, pageSize, blockSize, pageCount, blockCount, beginPage, endPage, prevBlock, nextBlock, lastBlockPage;
 	boolean existPrev, existNext;
-	String writer
 	;
 
 	public void carryOut(Map<?,?> p) {
