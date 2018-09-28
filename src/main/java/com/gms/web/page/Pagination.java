@@ -10,16 +10,17 @@ import lombok.Data;
 public class Pagination implements Proxy{
 	int countRow, pageNumber,beginRow, endRow, pageSize, blockSize, pageCount, blockCount, beginPage, endPage, prevBlock, nextBlock, lastBlockPage;
 	boolean existPrev, existNext;
+	String writer
+	;
 
-	public void carryOut(Map<?,?> param) {
-		this.pageNumber = (int) param.get("pageNumber");
-/*		this.pageNumber = (int)o);*/
+	public void carryOut(Map<?,?> p) {
+		this.pageNumber = (int) p.get("pageNumber");
 		this.pageSize=5;
 		this.blockSize=5;
 		this.beginRow = pageNumber*pageSize-(pageSize-1);
 		this.endRow = pageNumber*pageSize;
 		/*this.countRow =MemberServiceImpl.getInstance().count();*/
-		this.countRow =(int) param.get("countRow");
+		this.countRow =(int) p.get("countRow");
 		this.pageCount = countRow%pageSize==0?countRow/pageSize:countRow/pageSize+1;
 		this.blockCount = pageCount%blockSize==0?pageCount/blockSize:pageCount/blockSize+1;
 		this.beginPage= pageNumber-((pageNumber-1)%blockSize);

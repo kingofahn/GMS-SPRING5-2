@@ -8,6 +8,45 @@
  values(#{title},#{content}, #{writer})
  </insert>
 
+
+
+<select id="countAll" resultType="int">
+SELECT 
+	COUNT(*)
+FROM
+	BOARD
+</select>
+
+
+<select id="countUserList" resultType="int">
+SELECT 
+	count(*)
+FROM
+	BOARD
+WHERE 
+    writer = #{writer}
+</select>
+
+
+
+ <select id="selectUserList" resultType="com.gms.web.brd.Board">
+	SELECT *
+    FROM (
+       SELECT
+       ROW_NUMBER() OVER(ORDER BY BNO DESC) AS NUM,
+       A.*
+       FROM
+           BOARD A
+       WHERE writer = #{writer}
+ 		)B
+    WHERE B.NUM BETWEEN #{beginRow} AND #{endRow}
+    ORDER BY B.NUM
+ </select>
+
+
+
+
+
  <select id="selectOne" resultType="com.gms.web.brd.Board">
  select 
    bno, title, content, writer, regdate, viewcnt 
@@ -22,14 +61,16 @@
 					FROM BOARD b 
 					ORDER BY RNUM DESC) T 
 			WHERE T.bno BETWEEN #{beginRow} AND #{endRow} -->
-          SELECT *
-           FROM (
-            SELECT row_number() over() as No, A.*
-            FROM (
-            SELECT *
-            FROM board) A
-            ORDER BY No DESC) B
-            WHERE NO BETWEEN #{beginRow} AND #{endRow}
+	SELECT *
+       FROM (
+       SELECT
+       ROW_NUMBER() OVER(ORDER BY BNO DESC) AS NUM,
+       A.*
+       FROM
+           BOARD A
+ 		)B
+       WHERE B.NUM BETWEEN #{beginRow} AND #{endRow}
+       ORDER BY B.NUM
  </select>
 
  <update id="update">

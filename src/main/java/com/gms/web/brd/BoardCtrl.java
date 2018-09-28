@@ -21,14 +21,36 @@ public class BoardCtrl {
 	@Autowired Pagination page;
 	@Autowired Util2 util2;
 	@RequestMapping("/boards/{pageNo}")
-	public @ResponseBody List<Board> 
-		list(@PathVariable int pageNo){
-		Util.log.accept("pageNo : " + pageNo);
+	public @ResponseBody Map<String,Object> 
+		list(@PathVariable String pageNo){
+		Util.log.accept("넘어온페이지 : " + pageNo);
 		Map<String,Object> rmap = new HashMap<>();
-		page.setBeginRow(1);
-		page.setEndRow(5);
-		List<Board> list = brdMap.listAll(page);
-		Util.log.accept("List : " + list);
-		return list;
+		rmap.put("pageNumber", Integer.parseInt(pageNo));
+		rmap.put("countRow", brdMap.countAll());
+		page.carryOut(rmap);
+		// countRow, existPrev, prevBlock, beginPage, existNext, nextBlock
+		List<Board> list= brdMap.listAll(page);
+		rmap.put("list", list);
+		rmap.put("page", page);
+		return rmap;
+	}
+	
+	@RequestMapping("/boards/{id}/{pageNo}")
+	public @ResponseBody Map<String,Object> 
+		mylist(@PathVariable String pageNo,
+				@PathVariable String id){
+		Util.log.accept("넘어온페이지 : " + pageNo);
+		Util.log.accept("넘어온id : " + id);
+		page.setWriter(id);
+		Util.log.accept("brd.getWriter()"+brd.getWriter());
+		Map<String,Object> rmap = new HashMap<>();
+		rmap.put("pageNumber", Integer.parseInt(pageNo));
+		rmap.put("countRow", brdMap.countUserList(page));
+		Util.log.accept("brdMap.countUserList(brd) : " + brdMap.countUserList(page));
+		page.carryOut(rmap);
+		rmap.put("list", brdMap.selectUserList(page));
+		rmap.put("page", page);
+		Util.log.accept("brdMap.selectUserList(brd) : " + brdMap.selectUserList(page));
+		return rmap;
 	}
 }

@@ -58,20 +58,11 @@ var ui={
 ------------------------------------------------------------------------*/
 	},
 	table : x =>{
-/*		<div class="panel panel-default">
-		  <div class="panel-heading">Panel heading</div>
-		  <div class="panel-body">
-		   <p>...</p>
-		  </div>
-		  <table class="table">
-		  </table>
-		</div>*/
-		/*let d = $('<div class="panel panel-'+ x.type+'/>');*/
 		let d = $('<div/>').addClass('panel panel-'+x.type);
 		let ph = $('<div/>').addClass('panel-heading').html(x.head);
 		let p = $('<p/>').html(x.body);
 		let pb = $('<div/>').addClass('panel-body');
-		let thead = $('<thead/>')
+		let thead = $('<thead/>').addClass('thead-dark');
 		let t = $('<table/>').attr({id:x.id}).addClass(x.clazz);
 		let tr = $('<tr/>');
 		$.each(x.list,(i,j)=>{
@@ -85,5 +76,8 @@ var ui={
 		p.appendTo(pb)
 		t.appendTo(d);
 		return d;
-	}
-}
+	},
+	page : x =>{
+		return $('<ul/>').addClass('pagination').appendTo($('<nav/>').attr('aria-label','...'));
+	}  // page END 
+} // ui END	

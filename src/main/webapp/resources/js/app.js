@@ -65,7 +65,6 @@ app.main =(()=>{
 	return {init:init};
 })();  // app.main END
 
-
 app.board =(()=>{
 	var w, nav, header, content, footer, ctx, script, style, img;
 	var init =()=>{
@@ -86,35 +85,10 @@ app.board =(()=>{
 	var setContentView =()=>{
 		/*$('#header').remove();*/
 		$('#content').empty();
-		$.getJSON(ctx+'/boards/1', d=>{
-			console.log('getJSON 성공!!'+ d.ls);
-			$.getScript($.script()+'/compo.js',()=>{
-				let x = {
-						type : 'default',
-						id : 'table',
-						head : '게시판',
-						body : '오픈게시판...누구든지 사용가능',
-						list : ['NO','제목','내용','글쓴이','작성일','조회수'],
-						clazz : 'table table-bordered'
-				};
-				(ui.table(x))
-				.appendTo($('#content'));
-				$.each(d,(i,j)=>{
-					$('<tr/>').append(
-					$('<td/>').attr('width','5%').html(j.bno),
-					$('<td/>').attr('width','10%').html(j.title),
-					$('<td/>').attr('width','50%').html(j.content),
-					$('<td/>').attr('width','10%').html(j.writer),
-					$('<td/>').attr('width','10%').html(j.regdate),
-					$('<td/>').attr('width','5%').html(j.viewcnt)
-					).appendTo($('tbody'));
-				});
-			});
-		}); // getJSON END
+		app.service.boards(1);
 	}; // setContentView END
 	return {init:init};
 })();  // app.board END
-
 
 app.permision = (()=>{
 	var login = ()=>{
@@ -150,8 +124,7 @@ app.permision = (()=>{
 									app.permision.login();
 									alert('비밀번호 오류 입니다.');
 								} else {
-									app.router.home();
-									alert('로그인 성공 하였습니다');
+									app.router.home({id:$('#userid').val(), pageNo:1});
 								}
 							},
 							error : (m1,m2,m3)=>{
@@ -186,14 +159,12 @@ app.permision = (()=>{
 					$('#ssn').val(),$('#email').val(),$('#phone').val(),$('#teamid').val(),
 					$('#roll').val(),$('#subject').val()
 					])){
-						alert('join버튼 클릭 ok');
 						var arr=[];
 						var sub = $("[name='subject']")
 						let i;
 						let a = '';
 						for(i of sub){
 							if(i.checked){
-								alert('선택된 과목::' + i.value)
 								arr.push(i.value);
 							}
 						}
@@ -226,6 +197,130 @@ app.permision = (()=>{
 	} // join END
 	return {login : login, join : join}
 })(); // app.permision  END
+
+app.service={
+	boards :  x=>{
+		$.getJSON($.ctx()+'/boards/'+x, d=>{
+			$.getScript($.script()+'/compo.js',()=>{
+				$('#content').empty();
+				let json = {
+						type : 'default',
+						id : 'table',
+						head : '게시판',
+						body : '오픈게시판...누구든지 사용가능',
+						list : ['NO','제목','내용','글쓴이','작성일','조회수'],
+						clazz : 'table table-striped'  //  table table-bordered(일반)  table table-striped'(얼룩말무늬)
+				};
+				(ui.table(json))
+				.appendTo($('#content'));
+				$.each(d.list,(i,j)=>{
+					$('<tr/>').append(
+					$('<td/>').attr('width','5%').html(j.bno),
+					$('<td/>').attr('width','10%').html(j.title),
+					$('<td/>').attr('width','50%').html(j.content),
+					$('<td/>').attr('width','10%').html(j.writer),
+					$('<td/>').attr('width','10%').html(j.regdate),
+					$('<td/>').attr('width','5%').html(j.viewcnt)
+					).appendTo($('tbody'));
+				}); // $.each END
+				ui.page({}).appendTo($('#content'));
+				let ul = $('.pagination');
+				let existPrev = d.page.existPrev;
+				let existNext = d.page.existNext;
+				let prev = '';
+				let next = '';
+				prev =(!existPrev)?'disabled':'';
+				next =(!existNext)?'disabled':'';
+				let preli = $('<li id="prev" class="page-item '+prev+'"><span class="page-link">◀</span>');
+				let nextli = $('<li id="next"  class="page-item '+next+'""><span class="page-link">▶</span>');
+				preli.appendTo(ul).click(e=>{
+					if(existPrev){
+					app.service.boards(d.page.prevBlock);
+					} 
+				});// preli.appendTo(ul).click) END	
+				for(let i=d.page.beginPage;i<=d.page.endPage;i++){
+					$('<li class="page-item"/>')
+					.addClass((i==d.page.pageNumber)?'active':'')
+					.append($('<span/>')
+					.addClass('page-link')
+					.html(i)).appendTo(ul)
+					.click(e=>{
+						app.service.boards(i);
+					});
+				}
+				nextli.appendTo(ul).click(e=>{
+					if(existNext){
+						app.service.boards(d.page.nextBlock);
+					} 
+				});// nextli.appendTo(ul).click END 
+				$('.page-link').attr('style',"cursor:pointer");
+			}); // $.$.getScript($.script()+'/compo.js' END
+		}); // getJSON END
+	}, // boards END
+	
+	my_board : x=>{
+		$.getJSON($.ctx()+'/boards/'+x.id+'/'+x.pageNo, d=>{
+			$.getScript($.script()+'/compo.js',()=>{
+				$('#content').empty();
+				let json = {
+						type : 'default',
+						id : 'table',
+						head : '게시판',
+						body : '오픈게시판...누구든지 사용가능',
+						list : ['NO','제목','내용','글쓴이','작성일','조회수'],
+						clazz : 'table table-striped'  //  table table-bordered(일반)  table table-striped'(얼룩말무늬)
+				};
+				(ui.table(json))
+				.appendTo($('#content'));
+				$.each(d.list,(i,j)=>{
+					$('<tr/>').append(
+					$('<td/>').attr('width','5%').html(j.bno),
+					$('<td/>').attr('width','10%').html(j.title),
+					$('<td/>').attr('width','50%').html(j.content),
+					$('<td/>').attr('width','10%').html(j.writer),
+					$('<td/>').attr('width','10%').html(j.regdate),
+					$('<td/>').attr('width','5%').html(j.viewcnt)
+					).appendTo($('tbody'));
+				}); // $.each END
+				ui.page({}).appendTo($('#content'));
+				let ul = $('.pagination');
+				let existPrev = d.page.existPrev;
+				let existNext = d.page.existNext;
+				let prev = '';
+				let next = '';
+				prev =(!existPrev)?'disabled':'';
+				next =(!existNext)?'disabled':'';
+				let preli = $('<li id="prev" class="page-item '+prev+'"><span class="page-link">◀</span>');
+				let nextli = $('<li id="next"  class="page-item '+next+'""><span class="page-link">▶</span>');
+				console.log('d.page.beginPage : ' + d.page.beginPage)
+				console.log('d.page.endPage : ' + d.page.endPage)
+				preli.appendTo(ul).click(e=>{
+					if(existPrev){
+					app.service.my_board({id:x.id,pageNo:d.page.prevBlock});
+					} 
+				});// preli.appendTo(ul).click) END				
+				for(let i=d.page.beginPage;i<=d.page.endPage;i++){
+					$('<li class="page-item"/>')
+					.addClass((i==d.page.pageNumber)?'active':'')
+					.append($('<span/>')
+					.addClass('page-link')
+					.html(i)).appendTo(ul)
+					.click(e=>{
+						app.service.my_board({id:x.id, pageNo:i});
+					});
+				}
+					nextli.appendTo(ul).click(e=>{
+						if(existNext){
+						app.service.my_board({id:x.id,pageNo:d.page.nextBlock});
+						} 
+					});// nextli.appendTo(ul).click END 
+				$('.page-link').attr('style',"cursor:pointer");
+			}); // $.$.getScript($.script()+'/compo.js' END
+		}); // getJSON END
+	} // my_board END
+	
+}; // app.service  END
+
 app.router = {
 	init :x=>{
 		$.getScript(x+'/resources/js/router.js',
@@ -238,7 +333,7 @@ app.router = {
 			}
 		); // getScript end
 	}, // app.router end
-	home : ()=>{
+	home : x =>{
 		$.when(
 				$.getScript($.script()+'/header.js'),
 				$.getScript($.script()+'/nav.js'),
@@ -265,7 +360,7 @@ app.router = {
 								app.main.init();
 							});
 							$('#board').click(e=>{
-								app.board.init();
+								app.service.my_board({id:x.id, pageNo:1});
 							})
 						})
 						.fail(x=>{

@@ -2,7 +2,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<title>Landing Page - Start Bootstrap Theme</title>
+	<title> Let's play 야놀자 </title>
 	<link rel="shortcut icon" href="${ctx}/resources/img/favicon.ico" />
     <link href="${ctx}/resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${ctx}/resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">

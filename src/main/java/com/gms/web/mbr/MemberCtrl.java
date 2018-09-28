@@ -30,14 +30,14 @@ public class MemberCtrl {
 		String flag = "회원가입 실패";
 		Util.log.accept("\n --------- join  !!--------");
 		Util.log.accept("들어온값 :::" + pm.toString());
-/*		if(mbrMap.count(pm)!=0) {*/
+		if(mbrMap.count(pm)==0) {
 			pm.setAge(util2.getAgeAndMember.apply(pm).getAge());
 			pm.setGender(util2.getAgeAndMember.apply(pm).getGender());
 			Util.log.accept("age :  " + pm.getAge());
 			Util.log.accept("gender : " + pm.getGender());
-			/*mbrMap.post(pm);*/
+			mbrMap.post(pm);
 			rmap.put("회원가입결과 :", flag);
-		/*}*/
+		}
 		return rmap;
 	}
 

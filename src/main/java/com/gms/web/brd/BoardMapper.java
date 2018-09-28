@@ -13,11 +13,14 @@ public interface BoardMapper {
   public void update(Board vo);
   public void delete(Integer bno);
   public List<Board> listAll(Pagination p);
+  public List<Board> selectUserList(Pagination p);
   public List<Board> listPage(int page);
   public List<Board> listCriteria(Criteria cri);
   public int countPaging(Criteria cri);
   public List<Board> listSearch(SearchCriteria cri);
   public int listSearchCount(SearchCriteria cri);
+  public int countAll();
+  public int countUserList(Pagination p);
   public void updateReplyCnt(Integer bno, int amount);
   public void updateViewCnt(Integer bno);
   public void addAttach(String fullName);
