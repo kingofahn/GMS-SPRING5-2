@@ -309,11 +309,11 @@ app.service={
 						app.service.my_board({id:x.id, pageNo:i});
 					});
 				}
-					nextli.appendTo(ul).click(e=>{
-						if(existNext){
-						app.service.my_board({id:x.id,pageNo:d.page.nextBlock});
-						} 
-					});// nextli.appendTo(ul).click END 
+				nextli.appendTo(ul).click(e=>{
+					if(existNext){
+					app.service.my_board({id:x.id,pageNo:d.page.nextBlock});
+					} 
+				});// nextli.appendTo(ul).click END 
 				$('.page-link').attr('style',"cursor:pointer");
 			}); // $.$.getScript($.script()+'/compo.js' END
 		}); // getJSON END
